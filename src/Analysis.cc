@@ -74,7 +74,7 @@ void Analysis::UserSteppingAction(const G4Step* aStep) {
   }
 	
     if(aStep->GetPreStepPoint()->GetPhysicalVolume()->GetName()=="DUBALL") {
-		std::cout << "In DUBALL!" << std::endl;
+		//std::cout << "In DUBALL!" << std::endl;
         // if it is leaving the 'oxide' volume:
         if(aStep->GetPostStepPoint()->GetStepStatus()==fGeomBoundary) {
             Time = aTrack->GetGlobalTime()/(ns); ///(ns);

@@ -74,7 +74,9 @@ B3PrimaryGeneratorAction::~B3PrimaryGeneratorAction()
 
 void B3PrimaryGeneratorAction::GeneratePrimaries(G4Event* anEvent)
 {
-            
+	
+  if (anEvent->GetEventID() % 10000 ==0)
+	G4cout << "Event = " << anEvent->GetEventID() << "  time = " << Time/1e9 << " seconds"  << G4endl;
   //create vertex
   G4double rannum = CLHEP::RandFlat::shoot(0.,1.);
 
