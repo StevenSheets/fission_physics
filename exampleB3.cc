@@ -19,6 +19,9 @@
 #include "QGSP_BIC_HP.hh"
 #include "Analysis.hh"
 #include "SteppingAction.hh"
+#include "MyPhysicsList.hh"
+#include "G4PhysListFactory.hh"
+#include "DMXPhysicsList.hh"
 
 //....oooOO0OOooo........oooOO0OOooo........oooOO0OOooo........oooOO0OOooo......
 
@@ -49,9 +52,17 @@ int main(int argc,char** argv)
   // Set mandatory initialization classes
   //
   runManager->SetUserInitialization(new B3DetectorConstruction);
-  //
-  runManager->SetUserInitialization(new QGSP_BIC_HP);
-    
+	    G4PhysListFactory factory;
+
+    G4VModularPhysicsList* physicsList = 0; //new QGSP_BIC_HP(verbose);
+    G4String physName = "QGSP_BIC_HP";
+    //physicsList = factory.GetReferencePhysList(physName);
+	//physicsList = new MyPhysicsList(1);
+
+  runManager->SetUserInitialization(new DMXPhysicsList);
+	
+	
+	
   // Set user action initialization
   //
   runManager->SetUserInitialization(new B3ActionInitialization());  
