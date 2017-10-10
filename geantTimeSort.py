@@ -4,6 +4,7 @@ import math
 from ROOT import TH1F, TH2F, TFile
 import numpy as np
 
+#usage: $>python geantTimeSort.py filename.txt [mcnp|geant]
 # get the filename:
 filename = sys.argv[1]
 # get the type:
@@ -40,17 +41,11 @@ if type=='geant':
 			pid=1
 		if hold[2]=='gamma':
 			pid=2
-		#convert shakes to nanoseconds:
 		ltuple = (float(hold[0]), pid, float(hold[1]));
 		Data.append(ltuple);
 
 	SortedData = sorted( Data, key=lambda time: time[0]);
 
-	#for i in range( len( SortedData )):
-	#	nt = SortedData[i];
-	#	st = str(nt[0])+' '+str( nt[1])+' '+str(nt[2])+'\n';
-	#	outfile.write(st);
-	#outfile.close()
 
 def genLogBins(nbins, axismin, axismax):
     factor = math.pow( axismax/axismin, 1./nbins)
@@ -111,25 +106,24 @@ previous_time = 0.0
 gprevious_time = 0.0
 nprevious_time = 0.0
 
-if type=='mcnp' or type=='geant':
-	for item in SortedData:
-		time = item[0]
-		Energy = item[2]
-		pid = item[1]
-		Multiplicity(time, pid)
-		if pid==1:
-			hEn.Fill(Energy)
-			hTIneutron.Fill( (time-nprevious_time))
-			nprevious_time = time
-			hTIng.Fill( (time - gprevious_time))
-		if pid==2:
-			hEg.Fill(Energy)
-			hTIgamma.Fill( (time -gprevious_time))
-			gprevious_time = time
-		dt = time - previous_time
+for item in SortedData:
+	time = item[0]
+	Energy = item[2]
+	pid = item[1]
+	Multiplicity(time, pid)
+	if pid==1:
+		hEn.Fill(Energy)
+		hTIneutron.Fill( (time-nprevious_time))
+		nprevious_time = time
+		hTIng.Fill( (time - gprevious_time))
+	if pid==2:
+		hEg.Fill(Energy)
+		hTIgamma.Fill( (time -gprevious_time))
+		gprevious_time = time
+	dt = time - previous_time
 
-		hTI.Fill(dt)
-		previous_time = time
+	hTI.Fill(dt)
+	previous_time = time
 
 
 Nscale = 1e5
